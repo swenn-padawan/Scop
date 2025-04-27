@@ -6,7 +6,7 @@
 /*   By: stetrel <stetrel@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 19:33:09 by stetrel           #+#    #+#             */
-/*   Updated: 2025/04/27 20:15:51 by stetrel          ###   ########.fr       */
+/*   Updated: 2025/04/28 00:03:34 by swenn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,12 @@
 # include <sys/mman.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdio.h>
+# include <string.h>
 # include <fcntl.h>
 # include <sys/stat.h>
+# include <ctype.h>
+# include "libft.h"
 
 typedef struct	s_vertex
 {

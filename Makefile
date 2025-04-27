@@ -8,7 +8,7 @@ CFLAGS			:=	-Wall -Werror -Wextra -g
 
 OTHERS_FLAGS	:=    -lSDL2 -lm
 
-IFLAGS			:=	-I ./includes -I ./libs/MacroLibX/includes -I ./libs/libft/include
+IFLAGS			:=	-I ./includes -I ./libs/MacroLibX/includes -I ./libs/Libft/include
 
 LIBFT_PATH		:=	libs/Libft
 
