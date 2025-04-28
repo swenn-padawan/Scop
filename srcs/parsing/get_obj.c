@@ -6,11 +6,13 @@
 /*   By: stetrel <stetrel@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 19:27:50 by stetrel           #+#    #+#             */
-/*   Updated: 2025/04/28 00:14:22 by swenn            ###   ########.fr       */
+/*   Updated: 2025/04/28 09:21:07 by swenn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+#include <stdio.h>
+#include <string.h>
 
 #define NB_IDENTIFIERS 7
 
@@ -39,23 +41,36 @@ static void	*getDataAddress(size_t size, int file_fd)
 	return (file_ptr);
 }
 
-static size_t	line_len(char *file)
+static size_t	line_len(char *file, char stop)
 {
 	size_t	len;
 
 	len = 0;
-	for (; file[len] && file[len] != '\n'; len++) ;
+	for (; file[len] && file[len] != stop; len++) ;
 	return (len);
 }
 
 
 UNUSED static char	*parseLine(char *file, UNUSED char **remain)
 {
-	UNUSED	char	*line = NULL;
+	UNUSED	char	*name = NULL;
 	UNUSED size_t	len = 0;
+			char	*id;
 
-	len = line_len(file);
-	
+
+	if (*file == '#'){
+		len = line_len(file, '\n');
+		name = strndup(file, len);
+		printf("name = %s\n", name);
+	}
+	else{
+		len = line_len(file, ' ');
+		id = strndup(file, len);
+		printf("id = %s\n", id);
+		if (isValidIdentifier(id))
+			printf("VALID\n");
+	}
+
 	/*
 		* Ici il faudrait parser la string en temps reel avec le moins d'alloc possible
 		* Avancer le pointeur (remain)
@@ -65,8 +80,7 @@ UNUSED static char	*parseLine(char *file, UNUSED char **remain)
 
 
 
-	line = strndup(file, len); //TODO error management
-	return (line);
+	return (file);
 }
 
 t_vertex	*SCOP_parseFile(const char *file)

@@ -6,7 +6,7 @@
 /*   By: stetrel <stetrel@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 19:33:09 by stetrel           #+#    #+#             */
-/*   Updated: 2025/04/28 00:03:34 by swenn            ###   ########.fr       */
+/*   Updated: 2025/04/28 09:19:18 by swenn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 /*
  * @source:
  * 1) https://en.wikipedia.org/wiki/Wavefront_.obj_file
+ * 2) https://www.scratchapixel.com/lessons/3d-basic-rendering/obj-file-format/obj-file-format.html
 */
 
 /*
@@ -35,6 +36,7 @@
 # include <fcntl.h>
 # include <sys/stat.h>
 # include <ctype.h>
+# include <stdbool.h>
 # include "libft.h"
 
 typedef struct	s_vertex
