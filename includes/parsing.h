@@ -6,7 +6,7 @@
 /*   By: stetrel <stetrel@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 19:33:09 by stetrel           #+#    #+#             */
-/*   Updated: 2025/04/28 09:19:18 by swenn            ###   ########.fr       */
+/*   Updated: 2025/04/29 16:08:49 by stetrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
  * @source:
  * 1) https://en.wikipedia.org/wiki/Wavefront_.obj_file
  * 2) https://www.scratchapixel.com/lessons/3d-basic-rendering/obj-file-format/obj-file-format.html
+ * 3) https://paulbourke.net/dataformats/obj/obj_spec.pdf
 */
 
 /*
