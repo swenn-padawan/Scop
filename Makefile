@@ -66,7 +66,7 @@ clean:
 	@printf "$(RED)$(BOLD)$(ITALIC)■$(RESET)  cleaned	$(RED)$(BOLD)$(ITALIC)$(MLX_DIR)$(RESET)\n"
 
 fclean: clean
-	@$(RM) $(NAME) $(NAME_BONUS)
+	@$(RM) $(NAME) $(NAME_BONUS) parsing.o parsing
 	@make fclean -C $(LIBFT_PATH) -s
 	@make fclean -C $(MACRO_PATH) -s
 	@printf "$(RED)$(BOLD)$(ITALIC)■$(RESET)  cleaned	$(RED)$(BOLD)$(ITALIC)$ $(NAME) $(RESET)\n"
