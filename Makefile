@@ -25,6 +25,9 @@ DIR_UP			=	mkdir -p $(@D)
 SRCS_DIR		:=	srcs
 
 SRCS_MANDA		:=	main.cpp \
+					parsing/SCOP_File.cpp \
+					parsing/SCOP_parsingUtils.cpp \
+					parsing/SCOP_Object.cpp \
 
 SRCS_MANDA		:=	$(addprefix $(SRCS_DIR)/, $(SRCS_MANDA))
 
