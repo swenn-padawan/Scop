@@ -2,13 +2,13 @@
 
 NAME			:=	scop
 
-CC				:=	cc
+CC				:=	c++
 
 CFLAGS			:=	-Wall -Werror -Wextra -g
 
 OTHERS_FLAGS	:=    -lSDL2 -lm
 
-IFLAGS			:=	-I ./includes -I ./libs/MacroLibX/includes -I ./libs/Libft/include
+IFLAGS			:=	-I ./includes -I ./libs/MacroLibX/includes
 
 LIBFT_PATH		:=	libs/Libft
 
@@ -24,11 +24,11 @@ DIR_UP			=	mkdir -p $(@D)
 
 SRCS_DIR		:=	srcs
 
-SRCS_MANDA		:=	parsing/get_obj.c \
+SRCS_MANDA		:=	main.cpp \
 
 SRCS_MANDA		:=	$(addprefix $(SRCS_DIR)/, $(SRCS_MANDA))
 
-OBJS_MANDA		:=	$(addprefix $(OBJS_DIR)/, $(SRCS_MANDA:.c=.o))
+OBJS_MANDA		:=	$(addprefix $(OBJS_DIR)/, $(SRCS_MANDA:.cpp=.o))
 
 #-BONUS------------------------------------------------------------------------#
 
@@ -54,7 +54,7 @@ $(LIBFT_PATH)/libft.a:
 #$(NAME_BONUS): $(MACRO_PATH)/libmlx.so $(LIBFT_PATH)/libft.a $(OBJS_MANDA) $(OBJS_BONUS)
 #	@$(CC) $(CFLAGS) $^ $(OTHERS_FLAGS) $(NAME_BONUS)
 
-$(OBJS_DIR)/%.o: %.c
+$(OBJS_DIR)/%.o: %.cpp
 	@$(DIR_UP)
 	@printf "$(CYAN)$(BOLD)$(ITALIC)■$(RESET)  compiling	$(GRAY)$(BOLD)$(ITALIC)$^$(RESET)\n"
 	@$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $<
