@@ -1,8 +1,26 @@
 #include "SCOP_File.hpp"
+#include <cstdlib>
 #include <sstream>
 #include <stdexcept>
 
 typedef void (*parseFuncs)(std::string line, UNUSED SCOP_Object &object);
+
+void	vertexRealloc(SCOP_Object &object, std::string id, int size){
+	if (id == "v"){
+		object.v.x = (float *)realloc(object.v.x, size);
+		object.v.y = (float *)realloc(object.v.y, size);
+		object.v.z = (float *)realloc(object.v.z, size);
+	}
+	if (id == "vn"){
+		object.vn.x = (float *)realloc(object.vn.x, size);
+		object.vn.y = (float *)realloc(object.vn.y, size);
+		object.vn.z = (float *)realloc(object.vn.z, size);
+	}
+	if (id == "vt"){
+		std::cout << "No more space for vt" << std::endl;
+		return ;
+	}
+}
 
 void	parseError(UNUSED std::string line, UNUSED SCOP_Object &object){
 	throw std::runtime_error("SCOP: Error: Unknown Id");
@@ -10,13 +28,20 @@ void	parseError(UNUSED std::string line, UNUSED SCOP_Object &object){
 
 void	parseVertex(UNUSED std::string line, UNUSED SCOP_Object &object){	
 	std::cout << "In parseVertex" << std::endl;
-	static int	index = 0;
+	static int			index = 0;
+	static int			last_size = START_SIZE;
 	std::stringstream	ss(line);
-	std::string	type;
+	std::string			type;
 
 	ss >> type;
 	ss >> object.v.x[index] >> object.v.y[index] >> object.v.z[index];
 	index++;
+	std::cout << index << std::endl;
+	if (index > last_size){
+		last_size *= 2;
+		vertexRealloc(object, type, last_size);
+	}
+	
 }
 
 void	parseSkip(UNUSED std::string line, UNUSED SCOP_Object &object){

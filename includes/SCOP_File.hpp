@@ -6,7 +6,7 @@
 /*   By: stetrel <stetrel@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 19:33:09 by stetrel           #+#    #+#             */
-/*   Updated: 2025/05/05 00:55:50 by swenn            ###   ########.fr       */
+/*   Updated: 2025/05/05 10:43:48 by swenn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ typedef struct	s_vertex
 }	t_vertex;
 
 typedef struct	s_textures{
-	float	u;
-	float	v;
+	float	*u;
+	float	*v;
 }	t_text;
 
 class SCOP_Object{
