@@ -6,13 +6,7 @@ CC				:=	c++
 
 CFLAGS			:=	-Wall -Werror -Wextra -g
 
-OTHERS_FLAGS	:=    -lSDL2 -lm
-
-IFLAGS			:=	-I ./includes -I ./libs/MacroLibX/includes
-
-LIBFT_PATH		:=	libs/Libft
-
-MACRO_PATH		:=	libs/MacroLibX
+IFLAGS			:=	-I ./includes
 	
 OBJS_DIR		:=	.build
 
@@ -20,42 +14,42 @@ RM				:=	rm -rf
 
 DIR_UP			=	mkdir -p $(@D)
 
+VERBOSE		?=	0
+
+ifeq ($(VERBOSE), 1)
+	CFLAGS += -DVERBOSE
+endif
+
+ifeq ($(LAZY), 1)
+	CFLAGS		:= -Wall -Wextra -g
+endif
+
+ifeq ($(VL), 1)
+	CFLAGS		:= -Wall -Wextra
+	CFLAGS += -DVERBOSE
+endif
+
+
 #-MANDA------------------------------------------------------------------------#
 
 SRCS_DIR		:=	srcs
 
-SRCS_MANDA		:=	main.cpp \
+SRCS		:=	main.cpp \
 					parsing/SCOP_File.cpp \
 					parsing/SCOP_parsingUtils.cpp \
 					parsing/SCOP_Object.cpp \
 
-SRCS_MANDA		:=	$(addprefix $(SRCS_DIR)/, $(SRCS_MANDA))
+SRCS		:=	$(addprefix $(SRCS_DIR)/, $(SRCS))
 
-OBJS_MANDA		:=	$(addprefix $(OBJS_DIR)/, $(SRCS_MANDA:.cpp=.o))
-
-#-BONUS------------------------------------------------------------------------#
-
-#we will see later...
-
-
+OBJS		:=	$(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
 
 #-COMPILATION-------------------------------------------------------------------#
 
 all: $(NAME)
 
-$(NAME): $(MACRO_PATH)/libmlx.so $(LIBFT_PATH)/libft.a $(OBJS_MANDA)
-	@$(CC) $(CFLAGS) $(OBJS_MANDA) $(LIBFT_PATH)/libft.a $(MACRO_PATH)/libmlx.so $(OTHERS_FLAGS) -o $(NAME)
+$(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) $(OTHERS_FLAGS) -o $(NAME)
 	@printf "$(GREEN)$(BOLD)$(ITALIC)■$(RESET)  building	$(GREEN)$(BOLD)$(ITALIC)$(NAME)$(RESET)\n"
-
-$(MACRO_PATH)/libmlx.so:
-	@make -C $(MACRO_PATH) -s -j
-
-$(LIBFT_PATH)/libft.a:
-	@make -C $(LIBFT_PATH) -s
-
-#bonus:
-#$(NAME_BONUS): $(MACRO_PATH)/libmlx.so $(LIBFT_PATH)/libft.a $(OBJS_MANDA) $(OBJS_BONUS)
-#	@$(CC) $(CFLAGS) $^ $(OTHERS_FLAGS) $(NAME_BONUS)
 
 $(OBJS_DIR)/%.o: %.cpp
 	@$(DIR_UP)
@@ -64,14 +58,10 @@ $(OBJS_DIR)/%.o: %.cpp
 
 clean:
 	@$(RM) $(OBJS_DIR)
-	@make clean -C $(LIBFT_PATH) -s
-	@make clean -C $(MACRO_PATH) -s
 	@printf "$(RED)$(BOLD)$(ITALIC)■$(RESET)  cleaned	$(RED)$(BOLD)$(ITALIC)$(MLX_DIR)$(RESET)\n"
 
 fclean: clean
-	@$(RM) $(NAME) $(NAME_BONUS) parsing.o parsing
-	@make fclean -C $(LIBFT_PATH) -s
-	@make fclean -C $(MACRO_PATH) -s
+	@$(RM) $(NAME)
 	@printf "$(RED)$(BOLD)$(ITALIC)■$(RESET)  cleaned	$(RED)$(BOLD)$(ITALIC)$ $(NAME) $(RESET)\n"
 
 remake: clean all

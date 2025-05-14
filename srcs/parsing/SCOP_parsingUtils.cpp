@@ -1,76 +1,81 @@
+#include "SCOP.hpp"
 #include "SCOP_File.hpp"
+#include "debug.hpp"
+#include "macro.hpp"
 #include <cstdlib>
 #include <sstream>
 #include <stdexcept>
 
-typedef void (*parseFuncs)(std::string line, UNUSED SCOP_Object &object);
+typedef void (*parseFuncs)(std::string line,  SCOP_Object &obj);
 
-void	vertexRealloc(SCOP_Object &object, std::string id, int size){
-	if (id == "v"){
-		object.v.x = (float *)realloc(object.v.x, size);
-		object.v.y = (float *)realloc(object.v.y, size);
-		object.v.z = (float *)realloc(object.v.z, size);
-	}
-	if (id == "vn"){
-		object.vn.x = (float *)realloc(object.vn.x, size);
-		object.vn.y = (float *)realloc(object.vn.y, size);
-		object.vn.z = (float *)realloc(object.vn.z, size);
-	}
-	if (id == "vt"){
-		std::cout << "No more space for vt" << std::endl;
-		return ;
-	}
+void	parseSkip(std::string line, SCOP_Object &object){
+	UNUSED(object);
+	UNUSED(line);
+	SCOP_WARN("In parseSkip: %s", line.c_str());
 }
 
-void	parseError(UNUSED std::string line, UNUSED SCOP_Object &object){
-	throw std::runtime_error("SCOP: Error: Unknown Id");
-}
-
-void	parseVertex(UNUSED std::string line, UNUSED SCOP_Object &object){	
-	std::cout << "In parseVertex" << std::endl;
-	static int			index = 0;
-	static int			last_size = START_SIZE;
-	std::stringstream	ss(line);
-	std::string			type;
-
-	ss >> type;
-	ss >> object.v.x[index] >> object.v.y[index] >> object.v.z[index];
-	index++;
-	std::cout << index << std::endl;
-	if (index > last_size){
-		last_size *= 2;
-		vertexRealloc(object, type, last_size);
-	}
+void	parseName(std::string line, SCOP_Object &obj){
 	
-}
-
-void	parseSkip(UNUSED std::string line, UNUSED SCOP_Object &object){
-	std::cout << "In parseSkip" << std::endl;
-}
-
-void	parseName(UNUSED std::string line, UNUSED SCOP_Object &object){
-	std::cout << "In parseName" << std::endl;
-	std::string			type;
+	std::string			id;
 	std::stringstream	ss(line);
 
-	ss >> type;
-	ss >> object.name;
+	ss >> id;
+	ss >> obj.name;
+	SCOP_LOG("In parseName: %s", line.c_str());
+	SCOP_LOG("Name: %s", obj.name.c_str());
 }
 
-void	parseNormals(UNUSED std::string line, UNUSED SCOP_Object &object){
-	std::cout << "In parseNormals" << std::endl;
-	static int	index = 0;
-	std::stringstream	ss(line);
-	std::string	type;
+void	parseVertex(std::string line, SCOP_Object &obj){
+	UNUSED(obj);
+	UNUSED(line);
+	SCOP_LOG("In parseVertex: %s", line.c_str());
 
-	ss >> type;
-	ss >> object.vn.x[index] >> object.vn.y[index] >> object.vn.z[index];
-	index++;
+	std::string			id;
+	std::stringstream	ss(line);
+	static int			index = 0;
+
+	ss >> id;
+	ss >> obj.v.x[index] >> obj.v.y[index] >> obj.v.z[index];
+	SCOP_LOG("v.x[%d] = %f | v.y[%d] = %f | v.z[%d] = %f", index, obj.v.x[index], index, obj.v.y[index], index, obj.v.z[index]);
+}
+
+void	parseNormals(std::string line, SCOP_Object &obj){
+	UNUSED(obj);
+	UNUSED(line);
+	SCOP_LOG("In parseNormals: %s", line.c_str());
+	
+	std::string			id;
+	std::stringstream	ss(line);
+	static int			index = 0;
+
+	ss >> id;
+	ss >> obj.vn.x[index] >> obj.vn.y[index] >> obj.vn.z[index];
+	SCOP_LOG("vn.x[%d] = %f | vn.y[%d] = %f | vn.z[%d] = %f", index, obj.vn.x[index], index, obj.vn.y[index], index, obj.vn.z[index]);
+}
+
+void	parseTextures(std::string line, SCOP_Object &obj){
+	UNUSED(obj);
+	UNUSED(line);
+	SCOP_LOG("In parseTextures: %s", line.c_str());
+
+	std::string			id;
+	std::stringstream	ss(line);
+	static int			index = 0;
+
+	ss >> id;
+	ss >> obj.vt.u[index] >> obj.vt.v[index];
+	SCOP_LOG("vt.u[%d] = %f | vt.v[%d] = %f", index, obj.vt.u[index], index, obj.vt.v[index]);
+}
+
+void	parseError(std::string line, SCOP_Object &obj){
+	UNUSED(obj);
+	UNUSED(line);
+	SCOP_ERR("In parseError: %s", line.c_str());
 }
 
 parseFuncs	getParseFuncs(std::string line){
-	std::stringstream ss(line);
-	std::string	type;
+	std::stringstream	ss(line);
+	std::string			type;
 
 	ss >> type;
 	if (type == "#")
@@ -83,6 +88,8 @@ parseFuncs	getParseFuncs(std::string line){
 		return (&parseVertex);
 	if (type == "vn")
 		return (&parseNormals);
+	if (type == "vt")
+		return (&parseTextures);
 	return (&parseError);
 }
 
@@ -94,7 +101,7 @@ bool	parseLine(std::string line){
 	try{
 		funcPtr(line, obj);
 	}catch(std::exception& e){
-		std::cout << e.what() << std::endl;
+		SCOP_ERR("%s", e.what());
 		return (false);
 	}
 	return (true);

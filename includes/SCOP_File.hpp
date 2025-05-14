@@ -6,7 +6,7 @@
 /*   By: stetrel <stetrel@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 19:33:09 by stetrel           #+#    #+#             */
-/*   Updated: 2025/05/05 10:43:48 by swenn            ###   ########.fr       */
+/*   Updated: 2025/05/14 10:13:53 by stetrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,6 @@
  * vt for the textures
  * f for the faces
 */
-
-# define UNUSED __attribute__((unused))
-# define NORETURN __attribute__((noreturn))
-# define DESTRUCTOR __attribute__((destructor))
 
 # include <ctype.h>
 # include <fstream>
@@ -75,7 +71,7 @@ class SCOP_Object{
 		std::string	name;
 		t_vertex	v;
 		t_vertex	vn;
-		t_text		*vt;
+		t_text		vt;
 };
 
 bool	parseLine(std::string line);

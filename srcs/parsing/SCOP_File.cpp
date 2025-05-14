@@ -1,5 +1,5 @@
 
-#include "SCOP_File.hpp"
+#include "SCOP.hpp"
 
 SCOP_File::SCOP_File():data(nullptr), size(0){}
 
