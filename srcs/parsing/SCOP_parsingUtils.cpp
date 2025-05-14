@@ -1,77 +1,21 @@
 #include "SCOP.hpp"
-#include "SCOP_File.hpp"
 #include "debug.hpp"
 #include "macro.hpp"
-#include <cstdlib>
-#include <sstream>
-#include <stdexcept>
 
 typedef void (*parseFuncs)(std::string line,  SCOP_Object &obj);
 
-void	parseSkip(std::string line, SCOP_Object &object){
-	UNUSED(object);
-	UNUSED(line);
-	SCOP_WARN("In parseSkip: %s", line.c_str());
-}
 
-void	parseName(std::string line, SCOP_Object &obj){
-	
-	std::string			id;
-	std::stringstream	ss(line);
+PARSE_GEN_WT_ALLOC(Skip, SCOP_WARN);
 
-	ss >> id;
-	ss >> obj.name;
-	SCOP_LOG("In parseName: %s", line.c_str());
-	SCOP_LOG("Name: %s", obj.name.c_str());
-}
+PARSE_GEN_WT_ALLOC(Error, SCOP_ERR);
 
-void	parseVertex(std::string line, SCOP_Object &obj){
-	UNUSED(obj);
-	UNUSED(line);
-	SCOP_LOG("In parseVertex: %s", line.c_str());
+PARSE_GEN_NAME(Name, SCOP_LOG);
 
-	std::string			id;
-	std::stringstream	ss(line);
-	static int			index = 0;
+PARSE_GEN_VEC3(Vertex, SCOP_LOG, v);
 
-	ss >> id;
-	ss >> obj.v.x[index] >> obj.v.y[index] >> obj.v.z[index];
-	SCOP_LOG("v.x[%d] = %f | v.y[%d] = %f | v.z[%d] = %f", index, obj.v.x[index], index, obj.v.y[index], index, obj.v.z[index]);
-}
+PARSE_GEN_VEC3(Normals, SCOP_LOG, vn);
 
-void	parseNormals(std::string line, SCOP_Object &obj){
-	UNUSED(obj);
-	UNUSED(line);
-	SCOP_LOG("In parseNormals: %s", line.c_str());
-	
-	std::string			id;
-	std::stringstream	ss(line);
-	static int			index = 0;
-
-	ss >> id;
-	ss >> obj.vn.x[index] >> obj.vn.y[index] >> obj.vn.z[index];
-	SCOP_LOG("vn.x[%d] = %f | vn.y[%d] = %f | vn.z[%d] = %f", index, obj.vn.x[index], index, obj.vn.y[index], index, obj.vn.z[index]);
-}
-
-void	parseTextures(std::string line, SCOP_Object &obj){
-	UNUSED(obj);
-	UNUSED(line);
-	SCOP_LOG("In parseTextures: %s", line.c_str());
-
-	std::string			id;
-	std::stringstream	ss(line);
-	static int			index = 0;
-
-	ss >> id;
-	ss >> obj.vt.u[index] >> obj.vt.v[index];
-	SCOP_LOG("vt.u[%d] = %f | vt.v[%d] = %f", index, obj.vt.u[index], index, obj.vt.v[index]);
-}
-
-void	parseError(std::string line, SCOP_Object &obj){
-	UNUSED(obj);
-	UNUSED(line);
-	SCOP_ERR("In parseError: %s", line.c_str());
-}
+PARSE_GEN_VEC2(Textures, SCOP_LOG, vt);
 
 parseFuncs	getParseFuncs(std::string line){
 	std::stringstream	ss(line);
@@ -79,18 +23,18 @@ parseFuncs	getParseFuncs(std::string line){
 
 	ss >> type;
 	if (type == "#")
-		return (&parseSkip);
+		return (FUNC_NAME(Skip));
 	if (type == "mtllib")
-		return (&parseSkip);
+		return (FUNC_NAME(Skip));
 	if (type == "o")
-		return (&parseName);
+		return (FUNC_NAME(Name));
 	if (type == "v")
-		return (&parseVertex);
+		return (FUNC_NAME(Vertex));
 	if (type == "vn")
-		return (&parseNormals);
+		return (FUNC_NAME(Normals));
 	if (type == "vt")
-		return (&parseTextures);
-	return (&parseError);
+		return (FUNC_NAME(Textures));
+	return (FUNC_NAME(Error));
 }
 
 bool	parseLine(std::string line){

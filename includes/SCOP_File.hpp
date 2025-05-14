@@ -6,7 +6,7 @@
 /*   By: stetrel <stetrel@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 19:33:09 by stetrel           #+#    #+#             */
-/*   Updated: 2025/05/14 10:13:53 by stetrel          ###   ########.fr       */
+/*   Updated: 2025/05/14 14:25:20 by stetrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 #include <stdexcept>
 #include <iostream>
 
-#define START_SIZE 16
+#define START_SIZE 64
 
 class SCOP_File {
 	public:
