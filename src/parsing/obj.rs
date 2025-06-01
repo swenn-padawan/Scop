@@ -1,0 +1,33 @@
+use std::env;
+use std::fs::File;
+use std::io::{self, BufRead, BufReader};
+use crate::parsing::Mesh;
+
+fn fill_mesh(line: &str, mesh: &mut Mesh){
+    if line.starts_with("v "){
+        let parts: Vec<&str> = line.split_whitespace().collect();
+        if parts.len() >= 4 {
+            let x: f32 = parts[1].parse().unwrap_or(0.0);
+            let y: f32 = parts[2].parse().unwrap_or(0.0);
+            let z: f32 = parts[3].parse().unwrap_or(0.0);
+            mesh.vertex.push([x, y, z]);
+            println!("Vertex added: {:?}", [x, y, z]);
+        }
+    }
+    
+}
+
+pub fn obj_parsing() -> io::Result<Mesh> {
+    let args: Vec<String> = env::args().collect();
+
+    let file = File::open(args[1].clone())?;
+
+    let reader = BufReader::new(file);
+    let mut mesh = Mesh::new();
+    for line in reader.lines() {
+        let line = line?;
+        fill_mesh(&line, &mut mesh);
+        // println!("{}", line);
+    }
+    Ok(mesh)
+}
