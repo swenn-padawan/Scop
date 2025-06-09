@@ -3,6 +3,7 @@ pub mod obj;
 pub struct Mesh{
     pub vertex: Vec<[f32; 3]>,
     pub faces: Vec<[usize; 3]>,
+    pub normales: Vec<[f32; 3]>,
 }
 
 impl Mesh {
@@ -10,6 +11,7 @@ impl Mesh {
         Mesh {
             vertex: Vec::new(),
             faces: Vec::new(),
+            normales: Vec::new(),
         }
     }
 }
